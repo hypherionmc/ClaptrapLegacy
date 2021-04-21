@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+}
+
+archivesBaseName = "Claptrap"
+group = 'me.hypherionmc'
+description = "A bot for tracking Curseforge Releases"
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+mainClassName = "me.hypherionmc.claptrap.ClaptrapBot"
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+if (System.getenv('BUILD_NUMBER') != null) {
+    version += ".${System.getenv('BUILD_NUMBER')}-all"
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'com.jagrosh:jda-utilities:3.0.3'
+    compile("com.github.TheRandomLabs:CurseAPI:master-SNAPSHOT"){
+        transitive = true
+    }
+    implementation 'org.json:json:20090211'
+    implementation group: 'com.typesafe', name: 'config', version: '1.4.0'
+    implementation 'net.dv8tion:JDA:4.1.1_162'
+    implementation 'es.nitaur.markdown:txtmark:0.16'
+    implementation group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '3.4.1'
+    implementation group: 'org.xerial', name: 'sqlite-jdbc', version: '3.30.1'
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+}
